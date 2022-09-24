@@ -16,4 +16,5 @@ func main() {
 	}
 
 	defer f.Close()
+	ParseLeases(f)
 }
