@@ -2,12 +2,11 @@ package main
 
 import (
 	"html/template"
-	"log"
 	"net/http"
 )
 
 // Leases view handler
-func leaseViewHandler(w http.ResponseWriter, r *http.Request) {
+func (a *webApp) leaseViewHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
 		return
@@ -21,14 +20,14 @@ func leaseViewHandler(w http.ResponseWriter, r *http.Request) {
 
 	ts, err := template.ParseFiles(files...)
 	if err != nil {
-		log.Println(err)
+		a.errorLogger.Println(err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
 
 	err = ts.ExecuteTemplate(w, "layout", nil)
 	if err != nil {
-		log.Println(err)
+		a.errorLogger.Println(err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
