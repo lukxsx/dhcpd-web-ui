@@ -1,0 +1,21 @@
+{{ define "title" }}Leases{{ end }}
+
+{{ define "main" }}
+  <h2>Active leases</h2>
+  {{ if .Leases }}
+    <table>
+      <tr>
+        <th>IP</th>
+        <th>Hostname</th>
+      </tr>
+      {{ range .Leases }}
+        <tr>
+          <td>{{ .IP }}</td>
+          <td>{{ .Hostname }}</td>
+        </tr>
+      {{ end }}
+    </table>
+  {{ else }}
+    <p>No leases</p>
+  {{ end }}
+{{ end }}

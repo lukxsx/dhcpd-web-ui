@@ -7,7 +7,7 @@ import (
 func (a *webApp) routes() *http.ServeMux {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", a.leaseViewHandler)
+	mux.HandleFunc("/", a.leaseListHandler)
 
 	return mux
 }
