@@ -41,13 +41,10 @@ func main() {
 		errorLogger: errorLogger,
 	}
 
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", app.leaseViewHandler)
-
 	server := &http.Server{
 		Addr:     ":3000",
 		ErrorLog: errorLogger,
-		Handler:  mux,
+		Handler:  app.routes(),
 	}
 
 	err = server.ListenAndServe()
