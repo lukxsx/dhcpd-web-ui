@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"os"
 )
@@ -16,5 +17,8 @@ func main() {
 	}
 
 	defer f.Close()
-	ParseLeases(f)
+	leases := ParseLeases(f)
+	for _, l := range leases {
+		fmt.Println(l)
+	}
 }
