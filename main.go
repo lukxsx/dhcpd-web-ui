@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 )
 
@@ -21,4 +22,12 @@ func main() {
 	for _, l := range leases {
 		fmt.Println(l)
 	}
+
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("hello"))
+	})
+
+	err = http.ListenAndServe(":3000", mux)
+	log.Fatal(err)
 }
