@@ -48,7 +48,9 @@ func main() {
 	defer f.Close()
 
 	leases := ParseLeases(f)
-	fmt.Println(leases)
+	for _, lease := range leases {
+		fmt.Println(lease)
+	}
 
 	err = server.ListenAndServe()
 	log.Fatal(err)
