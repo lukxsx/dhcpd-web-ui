@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"bytes"
 	"io"
-	"log"
 	"net/netip"
 	"regexp"
 )
@@ -13,11 +12,7 @@ import (
 var matchers = map[*regexp.Regexp]func(*Lease, string){
 	// Parse IP address
 	regexp.MustCompile("(.*) {"): func(l *Lease, value string) {
-		var err error
-		l.IP, err = netip.ParseAddr(value)
-		if err != nil {
-			log.Println("Error parsing IP: "+value, err)
-		}
+		l.IP = netip.MustParseAddr(value)
 	},
 
 	// Parse hostname
