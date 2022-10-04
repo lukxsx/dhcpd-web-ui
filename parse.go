@@ -4,8 +4,10 @@ import (
 	"bufio"
 	"bytes"
 	"io"
+	"log"
 	"net/netip"
 	"regexp"
+	"time"
 )
 
 // Map of regex matchers and functions to fill the variables in the struct
@@ -23,6 +25,23 @@ var matchers = map[*regexp.Regexp]func(*Lease, string){
 	// Parse MAC address
 	regexp.MustCompile(`hardware ethernet (.*);`): func(l *Lease, value string) {
 		l.MAC = value
+	},
+
+	// Parse start time
+	regexp.MustCompile(`starts (.*);`): func(l *Lease, value string) {
+		var err error
+		l.StartTime, err = time.Parse("2006/01/02 15:04:05 UTC", value[2:])
+		if err != nil {
+			log.Println(err)
+		}
+	},
+	// Parse end time
+	regexp.MustCompile(`starts (.*);`): func(l *Lease, value string) {
+		var err error
+		l.EndTime, err = time.Parse("2006/01/02 15:04:05 UTC", value[2:])
+		if err != nil {
+			log.Println(err)
+		}
 	},
 }
 
