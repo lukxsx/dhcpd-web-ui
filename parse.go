@@ -24,6 +24,11 @@ var matchers = map[*regexp.Regexp]func(*Lease, string){
 	regexp.MustCompile(`client-hostname "(.*)";`): func(l *Lease, value string) {
 		l.Hostname = value
 	},
+
+	// Parse MAC address
+	regexp.MustCompile(`hardware ethernet (.*);`): func(l *Lease, value string) {
+		l.MAC = value
+	},
 }
 
 // Parse fields from a lease entry into a lease struct
@@ -68,10 +73,21 @@ func ParseLeases(r io.Reader) []Lease {
 		return 0, nil, nil
 	})
 
-	var leases []Lease
+	// Save lease entries to a hashmap using the MAC address as the key.
+	// The dhcpd.leases file is in chronological order, so last entries
+	// are the newest. If there are multiple entries with the same MAC
+	// address, this will overwrite the previous ones
+	var leasesByMAC = map[string]Lease{}
+
 	for s.Scan() {
 		l := Lease{}
 		l.parseLeaseEntry(s.Bytes())
+		leasesByMAC[l.MAC] = l
+	}
+
+	// Add keys from map to list
+	var leases []Lease
+	for _, l := range leasesByMAC {
 		leases = append(leases, l)
 	}
 

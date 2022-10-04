@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -40,6 +41,15 @@ func main() {
 		Handler:  app.routes(),
 	}
 
-	err := server.ListenAndServe()
+	f, err := os.Open(conf.LeaseFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+
+	leases := ParseLeases(f)
+	fmt.Println(leases)
+
+	err = server.ListenAndServe()
 	log.Fatal(err)
 }
