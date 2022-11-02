@@ -14,8 +14,8 @@
         <tr>
           <td>{{ .IP }}</td>
           <td>{{ .Hostname }}</td>
-          <td>{{ .StartTime }}</td>
-          <td>{{ .EndTime }}</td>
+          <td>{{ .StartTime.Format "Jan 02, 2006 15:04:05 UTC" }}</td>
+          <td>{{ .EndTime.Format "Jan 02, 2006 15:04:05 UTC" }}</td>
         </tr>
       {{ end }}
     </table>

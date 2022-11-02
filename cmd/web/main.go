@@ -11,9 +11,10 @@ import (
 )
 
 type application struct {
-	errorLogger *log.Logger
-	infoLogger  *log.Logger
-	leaseStore  *leases.LeaseStore
+	errorLogger  *log.Logger
+	infoLogger   *log.Logger
+	leaseStore   *leases.LeaseStore
+	staticServer http.Handler
 }
 
 func main() {
@@ -37,11 +38,15 @@ func main() {
 		errorLogger.Fatal(err)
 	}
 
+	// Serve static files (css)
+	staticServer := http.FileServer(http.Dir("./assets/static/"))
+
 	// Initialize the web application struct
 	app := &application{
-		infoLogger:  infoLogger,
-		errorLogger: errorLogger,
-		leaseStore:  store,
+		infoLogger:   infoLogger,
+		errorLogger:  errorLogger,
+		leaseStore:   store,
+		staticServer: staticServer,
 	}
 
 	server := &http.Server{

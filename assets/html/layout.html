@@ -4,6 +4,7 @@
   <head>
     <meta charset='utf-8'>
     <title>{{ template "title" . }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
   </head>
   
   <body>
@@ -11,7 +12,7 @@
       <h1>dhcpd Web UI</h1>
     </header>
     
-    <main>
+    <main class="container">
       {{ template "main" . }}
     </main>
   </body>
