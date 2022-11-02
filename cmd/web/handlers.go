@@ -1,11 +1,9 @@
 package main
 
 import (
+	"dhcpd-ui/internal/leases"
 	"html/template"
 	"net/http"
-	"net/netip"
-
-	"dhcpd-ui/internal/leases"
 )
 
 type templateData struct {
@@ -33,9 +31,7 @@ func (a *application) leaseListHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := &templateData{
-		Leases: []leases.Lease{
-			{IP: netip.MustParseAddr("10.242.11.1"), Hostname: "asdfff"},
-		},
+		Leases: a.leaseStore.GetActiveLeases(),
 	}
 
 	err = ts.ExecuteTemplate(w, "layout", data)
