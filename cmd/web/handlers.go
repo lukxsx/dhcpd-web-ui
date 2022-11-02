@@ -4,10 +4,12 @@ import (
 	"html/template"
 	"net/http"
 	"net/netip"
+
+	"dhcpd-ui/internal/leases"
 )
 
 type templateData struct {
-	Leases []Lease
+	Leases []leases.Lease
 }
 
 // Lease list handler
@@ -31,7 +33,7 @@ func (a *webApp) leaseListHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := &templateData{
-		Leases: []Lease{
+		Leases: []leases.Lease{
 			{IP: netip.MustParseAddr("10.242.11.1"), Hostname: "asdfff"},
 		},
 	}

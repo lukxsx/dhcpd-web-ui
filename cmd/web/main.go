@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"dhcpd-ui/internal/leases"
 )
 
 type webApp struct {
@@ -47,7 +49,7 @@ func main() {
 	}
 	defer f.Close()
 
-	leases := ParseLeases(f)
+	leases := leases.ParseLeases(f)
 	for _, lease := range leases {
 		fmt.Println(lease)
 	}
