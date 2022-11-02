@@ -36,7 +36,7 @@ var matchers = map[*regexp.Regexp]func(*Lease, string){
 		}
 	},
 	// Parse end time
-	regexp.MustCompile(`starts (.*);`): func(l *Lease, value string) {
+	regexp.MustCompile(`ends (.*);`): func(l *Lease, value string) {
 		var err error
 		l.EndTime, err = time.Parse("2006/01/02 15:04:05 UTC", value[2:])
 		if err != nil {
@@ -87,21 +87,11 @@ func ParseLeases(r io.Reader) []Lease {
 		return 0, nil, nil
 	})
 
-	// Save lease entries to a hashmap using the MAC address as the key.
-	// The dhcpd.leases file is in chronological order, so last entries
-	// are the newest. If there are multiple entries with the same MAC
-	// address, this will overwrite the previous ones
-	var leasesByMAC = map[string]Lease{}
+	var leases []Lease
 
 	for s.Scan() {
 		l := Lease{}
 		l.parseLeaseEntry(s.Bytes())
-		leasesByMAC[l.MAC] = l
-	}
-
-	// Add keys from map to list
-	var leases []Lease
-	for _, l := range leasesByMAC {
 		leases = append(leases, l)
 	}
 
