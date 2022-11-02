@@ -19,6 +19,7 @@ type application struct {
 func main() {
 	// Parse command line flags
 	leasefile := flag.String("leasefile", "/var/db/dhcpd.leases", "dhcpd.leases file location")
+	port := flag.String("port", "3000", "HTTP port")
 	flag.Parse()
 
 	// Initialize loggers
@@ -26,7 +27,9 @@ func main() {
 	errorLogger := log.New(os.Stderr, "[ERROR]\t", log.Ldate|log.Ltime)
 
 	store := &leases.LeaseStore{
-		Filename: *leasefile,
+		Filename:    *leasefile,
+		InfoLogger:  infoLogger,
+		ErrorLogger: errorLogger,
 	}
 
 	err := store.Update()
@@ -42,7 +45,7 @@ func main() {
 	}
 
 	server := &http.Server{
-		Addr:     ":3000",
+		Addr:     ":" + *port,
 		ErrorLog: errorLogger,
 		Handler:  app.routes(),
 	}
