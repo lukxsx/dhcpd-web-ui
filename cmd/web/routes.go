@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-func (a *webApp) routes() *http.ServeMux {
+func (a *application) routes() *http.ServeMux {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", a.leaseListHandler)

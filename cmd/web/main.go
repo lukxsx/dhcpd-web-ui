@@ -10,9 +10,10 @@ import (
 	"dhcpd-ui/internal/leases"
 )
 
-type webApp struct {
+type application struct {
 	errorLogger *log.Logger
 	infoLogger  *log.Logger
+	leaseStore  *leases.LeaseStore
 }
 
 type Config struct {
@@ -31,8 +32,17 @@ func main() {
 	infoLogger := log.New(os.Stdout, "[INFO]\t", log.Ldate|log.Ltime)
 	errorLogger := log.New(os.Stderr, "[ERROR]\t", log.Ldate|log.Ltime)
 
+	store := &leases.LeaseStore{
+		Filename: conf.LeaseFile,
+	}
+
+	err := store.Update()
+	if err != nil {
+		errorLogger.Fatal(err)
+	}
+
 	// Initialize the web application struct
-	app := &webApp{
+	app := &application{
 		infoLogger:  infoLogger,
 		errorLogger: errorLogger,
 	}
@@ -43,15 +53,8 @@ func main() {
 		Handler:  app.routes(),
 	}
 
-	f, err := os.Open(conf.LeaseFile)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer f.Close()
-
-	leases := leases.ParseLeases(f)
-	for _, lease := range leases {
-		fmt.Println(lease)
+	for _, l := range store.GetActiveLeases() {
+		fmt.Println(l)
 	}
 
 	err = server.ListenAndServe()

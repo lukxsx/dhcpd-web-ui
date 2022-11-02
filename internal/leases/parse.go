@@ -65,7 +65,7 @@ func (l *Lease) parseLeaseEntry(data []byte) {
 }
 
 // Read lease entries from a file
-func ParseLeases(r io.Reader) []Lease {
+func parseLeases(r io.Reader) []Lease {
 	s := bufio.NewScanner(r)
 
 	// Splice file to lease entries using a custom split function

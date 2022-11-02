@@ -13,7 +13,7 @@ type templateData struct {
 }
 
 // Lease list handler
-func (a *webApp) leaseListHandler(w http.ResponseWriter, r *http.Request) {
+func (a *application) leaseListHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
 		return
