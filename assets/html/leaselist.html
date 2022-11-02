@@ -7,11 +7,15 @@
       <tr>
         <th>IP</th>
         <th>Hostname</th>
+        <th>Start</th>
+        <th>End</th>
       </tr>
       {{ range .Leases }}
         <tr>
           <td>{{ .IP }}</td>
           <td>{{ .Hostname }}</td>
+          <td>{{ .StartTime }}</td>
+          <td>{{ .EndTime }}</td>
         </tr>
       {{ end }}
     </table>
