@@ -7,7 +7,8 @@ import (
 )
 
 type templateData struct {
-	Leases []leases.Lease
+	ActiveLeases []leases.Lease
+	AllLeases    []leases.Lease
 }
 
 // Lease list handler
@@ -31,7 +32,8 @@ func (a *application) leaseListHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := &templateData{
-		Leases: a.leaseStore.GetActiveLeases(),
+		ActiveLeases: a.leaseStore.GetActiveLeases(),
+		AllLeases:    a.leaseStore.GetAllLeases(),
 	}
 
 	err = ts.ExecuteTemplate(w, "layout", data)

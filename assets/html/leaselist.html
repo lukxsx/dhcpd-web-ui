@@ -1,25 +1,29 @@
 {{ define "title" }}Leases{{ end }}
 
 {{ define "main" }}
-  <h2>Active leases</h2>
-  {{ if .Leases }}
-    <table>
-      <tr>
-        <th>IP</th>
-        <th>Hostname</th>
-        <th>Start</th>
-        <th>End</th>
-      </tr>
-      {{ range .Leases }}
-        <tr>
-          <td>{{ .IP }}</td>
-          <td>{{ .Hostname }}</td>
-          <td>{{ .StartTime.Format "Jan 02, 2006 15:04:05 UTC" }}</td>
-          <td>{{ .EndTime.Format "Jan 02, 2006 15:04:05 UTC" }}</td>
-        </tr>
-      {{ end }}
-    </table>
-  {{ else }}
-    <p>No leases</p>
+<h2>Active leases</h2>
+{{ if .ActiveLeases }}
+<table>
+  <tr>
+    <th>IP</th>
+    <th>Hostname</th>
+    <th>Start</th>
+    <th>End</th>
+  </tr>
+  {{ range .ActiveLeases }}
+  <tr>
+    <td>{{ .IP }}</td>
+    {{ if .Hostname }}
+      <td>{{ .Hostname }}</td>
+    {{ else }}
+      <td>Unknown</td>
+    {{ end }}
+    <td>{{ .StartTime.Format "Jan 02, 2006 15:04:05 UTC" }}</td>
+    <td>{{ .EndTime.Format "Jan 02, 2006 15:04:05 UTC" }}</td>
+  </tr>
   {{ end }}
+</table>
+{{ else }}
+<p>No leases</p>
+{{ end }}
 {{ end }}
